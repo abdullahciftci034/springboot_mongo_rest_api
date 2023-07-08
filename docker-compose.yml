@@ -1,0 +1,24 @@
+# Use root/example as user/password credentials
+version: '3.1'
+services:
+  mongo-db-app:
+    build: ./MongoDb_app
+    volumes:
+      - ./MongoDb_app/data:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - my_network  
+  spring-boot-rest-api-app:
+    build: ./SpringBootRestApi_app
+    volumes:
+      - ./SpringBootRestApi_app/springboot_restapi:/home/springboot_restapi
+    ports:
+      - '80:8080'
+    depends_on:
+      - mongo-db-app
+    networks:
+      - my_network
+networks:
+  my_network:  # Uygulama konteynerleri arasında bir ağ oluşturur
+    driver: bridge
